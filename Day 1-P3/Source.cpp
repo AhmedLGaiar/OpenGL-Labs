@@ -26,7 +26,7 @@ out vec4 FragColor;
 
 void main()
 {
-    FragColor = vec4(0.1, 0.1, 1.0, 1.0); // blue line
+    FragColor = vec4(0.1, 0.1, 1.0, 1.0); // blue
 }
 )";
 
@@ -36,23 +36,41 @@ GLuint CompileShader(GLenum type, const char* source)
     glShaderSource(shader, 1, &source, NULL);
     glCompileShader(shader);
 
-    // Optional: check compile status
     GLint success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success)
     {
         char infoLog[512];
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cout << "Shader Compile Error:\n" << infoLog << std::endl;
+        std::cerr << "Shader compilation failed:\n" << infoLog << std::endl;
     }
 
     return shader;
 }
 
+int Init()
+{
+    GLenum err = glewInit();
+    if (err != GLEW_OK)
+    {
+        std::cout << "Error initializing GLEW: " << glewGetErrorString(err) << std::endl;
+        return 1;
+    }
+
+    std::cout << "GLEW Version: " << glewGetString(GLEW_VERSION) << std::endl;
+    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // black background
+    glDisable(GL_DEPTH_TEST); // Not needed for 2D
+
+    return 0;
+}
+
 void InitGL()
 {
-    glewInit();
-
     GLuint vShader = CompileShader(GL_VERTEX_SHADER, vertexShaderCode);
     GLuint fShader = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderCode);
 
@@ -89,6 +107,7 @@ int main()
     sf::Window window(sf::VideoMode(WIDTH, HEIGHT), "Animated Sin Wave", sf::Style::Close, settings);
     window.setVerticalSyncEnabled(true);
 
+    if (Init() != 0) return 1; // Call your custom Init function
     InitGL();
 
     while (window.isOpen())
@@ -100,12 +119,10 @@ int main()
                 window.close();
         }
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // black background
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
 
-        // Calculate time in seconds
         float timeValue = static_cast<float>(clock()) / CLOCKS_PER_SEC;
         GLuint timeLocation = glGetUniformLocation(shaderProgram, "time");
         glUniform1f(timeLocation, timeValue);
@@ -116,7 +133,6 @@ int main()
         window.display();
     }
 
-    // Cleanup
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteProgram(shaderProgram);
