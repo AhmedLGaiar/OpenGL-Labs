@@ -78,8 +78,6 @@ void DrawPart(vec3 pos, vec3 rotAxis, float rotAngle, vec3 scaleVec) {
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 }
 
-
-
 int Init() {
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) return 1;
@@ -122,8 +120,6 @@ void Update(float dt) {
         camPitch = 0.0f;
     }
 }
-
-
 
 void Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
