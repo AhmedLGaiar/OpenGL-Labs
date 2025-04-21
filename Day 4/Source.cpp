@@ -45,11 +45,12 @@ vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 
 GLuint InitShader(const char* vertex_shader_file_name, const char* fragment_shader_file_name);
 
+
 void CreateColoredTriangle() {
     Vertex TriangleVertices[] = {
-        {vec3(-1, -1, 0), vec3(1.0f, 0.4f, 0.4f), vec3(0, 0, 1)},
-        {vec3(1, -1, 0), vec3(0.4f, 1.0f, 0.4f), vec3(0, 0, 1)},
-        {vec3(0, 1, 0), vec3(0.4f, 0.4f, 1.0f), vec3(0, 0, 1)}
+        {vec3(-1, -1, 0), vec3(1.0f, 0.2f, 0.2f), vec3(0, 0, 1)},
+        {vec3(1, -1, 0), vec3(0.2f, 1.0f, 0.2f), vec3(0, 0, 1)},
+        {vec3(0, 1, 0), vec3(0.2f, 0.2f, 1.0f), vec3(0, 0, 1)}
     };
 
     glGenBuffers(1, &VBO_ColoredTriangle);
@@ -75,14 +76,14 @@ void BindColoredTriangle() {
 
 void CreateCube() {
     Vertex cube_core_vertices[] = {
-        {vec3(-0.5, 0.5, 0.5), vec3(0.6f, 0.6f, 1.0f), vec3(0, 0, 1)},
-        {vec3(-0.5, -0.5, 0.5), vec3(0.6f, 0.6f, 1.0f), vec3(0, 0, 1)},
-        {vec3(0.5, -0.5, 0.5), vec3(0.6f, 0.6f, 1.0f), vec3(0, 0, 1)},
-        {vec3(0.5, 0.5, 0.5), vec3(0.6f, 0.6f, 1.0f), vec3(0, 0, 1)},
-        {vec3(0.5, 0.5, -0.5), vec3(0.3f, 0.3f, 0.6f), vec3(0, 0, -1)},
-        {vec3(0.5, -0.5, -0.5), vec3(0.3f, 0.3f, 0.6f), vec3(0, 0, -1)},
-        {vec3(-0.5, -0.5, -0.5), vec3(0.3f, 0.3f, 0.6f), vec3(0, 0, -1)},
-        {vec3(-0.5, 0.5, -0.5), vec3(0.3f, 0.3f, 0.6f), vec3(0, 0, -1)}
+        {vec3(-0.5, 0.5, 0.5), vec3(1.0f, 0.6f, 0.6f), vec3(0, 0, 1)},
+        {vec3(-0.5, -0.5, 0.5), vec3(1.0f, 0.6f, 0.6f), vec3(0, 0, 1)},
+        {vec3(0.5, -0.5, 0.5), vec3(1.0f, 0.6f, 0.6f), vec3(0, 0, 1)},
+        {vec3(0.5, 0.5, 0.5), vec3(1.0f, 0.6f, 0.6f), vec3(0, 0, 1)},
+        {vec3(0.5, 0.5, -0.5), vec3(0.4f, 0.4f, 1.0f), vec3(0, 0, -1)},
+        {vec3(0.5, -0.5, -0.5), vec3(0.4f, 0.4f, 1.0f), vec3(0, 0, -1)},
+        {vec3(-0.5, -0.5, -0.5), vec3(0.4f, 0.4f, 1.0f), vec3(0, 0, -1)},
+        {vec3(-0.5, 0.5, -0.5), vec3(0.4f, 0.4f, 1.0f), vec3(0, 0, -1)}
     };
     int vertices_Indeces[] = {
         0,1,2, 0,2,3, 3,2,5, 3,5,4, 4,5,6, 4,6,7,
@@ -130,7 +131,7 @@ void CreateSphere(float radius, int sectors, int stacks) {
             float y = xy * sin(sectorAngle);
             vec3 pos = vec3(x, y, z);
             vec3 normal = normalize(pos);
-            vec3 color = vec3(0.8f, 0.8f, 0.2f);
+            vec3 color = vec3(0.9f, 0.8f, 0.1f);
             vertices.push_back({ pos, color, normal });
         }
     }
@@ -159,6 +160,7 @@ void CreateSphere(float radius, int sectors, int stacks) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO_Sphere);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 }
+
 
 void BindSphere() {
     glBindBuffer(GL_ARRAY_BUFFER, VBO_Sphere);
